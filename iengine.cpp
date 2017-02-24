@@ -94,23 +94,25 @@ void IEngine::upload_shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& 
 }
 
 void IEngine::start_game() {
+
     while (!glfwWindowShouldClose(window)) {
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
 
         // Render
         // Clear the colorbuffer
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.2f, 0.4f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
 
         // Draw our first triangle
         for (auto & shape : shapes){
-            glBindVertexArray(shape.VBO);
-            glDrawElements(GL_TRIANGLES, 6 , GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
+            glBindVertexArray(shape.VAO);
+            glDrawArrays(GL_TRIANGLES,0,3);
+            //glDrawElements(GL_TRIANGLES, shape.nindices, GL_UNSIGNED_INT, 0);
         }
+        glBindVertexArray(0);
         //glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // Swap the screen buffers

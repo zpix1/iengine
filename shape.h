@@ -11,9 +11,10 @@
 
 class Shape {
 public:
-    GLuint VBO;
     GLuint VAO;
     GLuint EBO;
+public:
+    GLuint VBO;
     GLsizei nvertices;
     GLsizei nindices;
 public:
