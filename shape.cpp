@@ -1,13 +1,13 @@
 #include "shape.h"
 
 
-Shape::~Shape() {
+void Shape::destroy() {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
 }
 
-Shape::Shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
+void Shape::init(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
     nvertices = (GLsizei) vertices.size();
     nindices = (GLsizei) indices.size();
     glGenVertexArrays(1, &VAO);
@@ -28,4 +28,8 @@ Shape::Shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Note that this is allowed, the call to glVertexAttribPointer registered VBO as the currently bound vertex buffer object so afterwards we can safely unbind
 
     glBindVertexArray(0);
+}
+
+void Shape::gen() {
+
 }

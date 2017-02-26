@@ -89,9 +89,10 @@ IEngine::~IEngine() {
     return;
 }
 
-void IEngine::upload_shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
-    shapes.emplace(shapes.end(), vertices, indices);
-}
+//void IEngine::upload_shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
+//    shapes.push_back(Shape());
+//    shapes.back().init(vertices,indices);
+//}
 
 void IEngine::start_game() {
 
@@ -109,8 +110,7 @@ void IEngine::start_game() {
         // Draw our first triangle
         for (auto & shape : shapes){
             glBindVertexArray(shape.VAO);
-            glDrawArrays(GL_TRIANGLES,0,3);
-            //glDrawElements(GL_TRIANGLES, shape.nindices, GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, shape.nindices, GL_UNSIGNED_INT, 0);
         }
         glBindVertexArray(0);
         //glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -119,8 +119,15 @@ void IEngine::start_game() {
         glfwSwapBuffers(window);
     }
     // Properly de-allocate all resources once they've outlived their purpose
-    shapes.clear();
+    for (auto & shape : shapes){
+        shape.destroy();
+    }
     // Terminate GLFW, clearing any resources allocated by GLFW.
     glfwTerminate();
     return;
+}
+
+void IEngine::upload(Shape& s) {
+    s.gen();
+    shapes.push_back(s);
 }

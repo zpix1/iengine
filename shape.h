@@ -12,14 +12,16 @@
 class Shape {
 public:
     GLuint VAO;
-    GLuint EBO;
-public:
-    GLuint VBO;
     GLsizei nvertices;
     GLsizei nindices;
+private:
+    GLuint VBO;
+    GLuint EBO;
+protected:
+    void init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices);
 public:
-    Shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
-    ~Shape();
+    virtual void gen();
+    void destroy();
 };
 
 

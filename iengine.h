@@ -24,6 +24,7 @@ public:
     //void upload_vector(GLfloat *vertices, GLuint *indices);
     void upload_shape(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
     void start_game();
+    void upload(Shape& s);
 };
 
 
