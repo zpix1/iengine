@@ -3,7 +3,7 @@
 #include <vector>
 
 int main() {
-    IEngine ei = IEngine(500, 500, "Test");
+    IEngine ei = IEngine(500, 500, "Test",Color(83,134,139,26));
 
     Circle a(0.5f,0.0f,0.0f);
     Circle b(0.2f,0.4f,0.4f);

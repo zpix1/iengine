@@ -4,7 +4,8 @@
 
 #include "iengine.h"
 
-IEngine::IEngine(int height, int width, const char *title) {
+IEngine::IEngine(int height, int width, const char *title, Color bg) {
+    background = bg;
     const GLchar *vertexShaderSource = "#version 330 core\n"
             "layout (location = 0) in vec3 position;\n"
             "void main()\n"
@@ -102,7 +103,7 @@ void IEngine::start_game() {
 
         // Render
         // Clear the colorbuffer
-        glClearColor(0.2f, 0.4f, 0.3f, 1.0f);
+        glClearColor(background.r,background.g,background.b,background.alpha);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
@@ -131,3 +132,4 @@ void IEngine::upload(Shape& s) {
     s.gen();
     shapes.push_back(s);
 }
+

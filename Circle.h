@@ -6,7 +6,7 @@
 #ifndef OPENGL_CIRCLE_H
 #define OPENGL_CIRCLE_H
 
-#include "shape.h"
+#include "Shape.h"
 #define M_PI          3.141592653589793238462643383279502884
 
 class Circle: public Shape {
