@@ -4,13 +4,16 @@
 
 #include "iengine.h"
 
-IEngine::IEngine(int height, int width, const char *title, Color bg) {
-    background = bg;
+IEngine::IEngine(int height1, int width1, const char *title, Color bg) {
+    background = bg; //background color
+    width = width1;
+    height = height1;
     const GLchar *vertexShaderSource = "#version 330 core\n"
+            "uniform mat4 wh;"
             "layout (location = 0) in vec3 position;\n"
             "void main()\n"
             "{\n"
-            "gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
+            "gl_Position = wh*vec4(position, 1.0);\n"
             "}\0";
     const GLchar *fragmentShaderSource = "#version 330 core\n"
             "out vec4 color;\n"
@@ -107,6 +110,12 @@ void IEngine::start_game() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
+
+        glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
+
+        GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
+
+        glUniformMatrix4fv(vertexWH,1,GL_FALSE,glm::value_ptr(mat));
 
         // Draw our first triangle
         for (auto & shape : shapes){

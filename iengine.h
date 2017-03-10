@@ -6,6 +6,10 @@
 #include <iostream>
 #include <vector>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Shape.h"
 #include "Color.h"
 
@@ -18,6 +22,7 @@ class IEngine {
     GLuint shaderProgram;
     std::vector<Shape> shapes;
     Color background;
+    int width,height;
 public:
     IEngine(int height, int width, const char *title, Color bg);
 

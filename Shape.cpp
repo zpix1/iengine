@@ -7,7 +7,7 @@ void Shape::destroy() {
     glDeleteBuffers(1, &EBO);
 }
 
-void Shape::init(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
+void Shape::init(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices, int render_mode) {
     nvertices = (GLsizei) vertices.size();
     nindices = (GLsizei) indices.size();
     glGenVertexArrays(1, &VAO);

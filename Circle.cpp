@@ -32,5 +32,5 @@ void Circle::gen() {
         indices[3 * i + 2] = i==n-1 ? 1 : i+2;
     }
 
-    init(vertices,indices);
+    init(vertices,indices,GL_TRIANGLES);
 }

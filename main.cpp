@@ -4,11 +4,11 @@
 #include <vector>
 
 int main() {
-    IEngine ei = IEngine(500, 500, "Test",Color(83,134,139,26));
+    IEngine ei = IEngine(1000, 1000, "Test",Color(83,134,139,26));
 
-    Circle head(0.2f,0.0f,0.3f);
-    Rectangle c(-0.1f,-0.3f,0.1f,0.3f);
-    ei.upload(head);
-    ei.upload(c);
+    Rectangle a(0,0,100,100);
+    Circle b(100,100,100);
+    ei.upload(a);
+    ei.upload(b);
     ei.start_game();
 }
