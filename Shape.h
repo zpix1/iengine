@@ -14,11 +14,13 @@ public:
     GLuint VAO;
     GLsizei nvertices;
     GLsizei nindices;
+    GLenum mode;
 private:
+    GLuint colorbuffer;
     GLuint VBO;
     GLuint EBO;
 protected:
-    void init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices, int render_mode);
+    void init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices,std::vector<GLfloat>& colors, GLenum mode);
 public:
     virtual void gen();
     void destroy();

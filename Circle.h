@@ -8,11 +8,14 @@
 
 #include "Shape.h"
 #define M_PI          3.141592653589793238462643383279502884
+#include <math.h>
+#include "Color.h"
 
 class Circle: public Shape {
     GLfloat x,y,radius;
+    Color color;
 public:
-    Circle(GLfloat radius, GLfloat x, GLfloat y);
+    Circle(GLfloat radius, GLfloat x, GLfloat y, Color color);
     void gen();
 };
 

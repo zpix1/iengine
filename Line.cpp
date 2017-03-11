@@ -16,5 +16,5 @@ void Line::gen() {
     std::vector<GLuint> indices {0,1};
 
 
-    init(vertices,indices,GL_LINES);
+//    init(vertices,indices,GL_LINES);
 }

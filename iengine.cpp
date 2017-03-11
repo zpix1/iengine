@@ -9,17 +9,21 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg) {
     width = width1;
     height = height1;
     const GLchar *vertexShaderSource = "#version 330 core\n"
-            "uniform mat4 wh;"
+            "uniform mat4 wh;\n"
+            "layout(location = 1) in vec4 vertexColor;\n"
             "layout (location = 0) in vec3 position;\n"
+            "out vec4 fragmentColor;\n"
             "void main()\n"
             "{\n"
             "gl_Position = wh*vec4(position, 1.0);\n"
+            "fragmentColor = vertexColor;\n"
             "}\0";
     const GLchar *fragmentShaderSource = "#version 330 core\n"
             "out vec4 color;\n"
+            "in vec4 fragmentColor;\n"
             "void main()\n"
             "{\n"
-            "color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+            "color = fragmentColor;\n"
             "}\n\0";
 
 
@@ -120,7 +124,7 @@ void IEngine::start_game() {
         // Draw our first triangle
         for (auto & shape : shapes){
             glBindVertexArray(shape.VAO);
-            glDrawElements(GL_TRIANGLES, shape.nindices, GL_UNSIGNED_INT, 0);
+            glDrawElements(shape.mode, shape.nindices, GL_UNSIGNED_INT, 0);
         }
         glBindVertexArray(0);
         //glDrawArrays(GL_TRIANGLES, 0, 6);
