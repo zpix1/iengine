@@ -16,7 +16,7 @@ class Circle: public Shape {
     Color color;
 public:
     Circle(GLfloat radius, GLfloat x, GLfloat y, Color color);
-    void gen();
+    void gen(int mode=1);
 };
 
 

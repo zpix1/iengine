@@ -4,7 +4,7 @@
 
 #include "iengine.h"
 
-IEngine::IEngine(int height1, int width1, const char *title, Color bg) {
+IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfun keycallback) {
     background = bg; //background color
     width = width1;
     height = height1;
@@ -41,7 +41,7 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg) {
     glfwMakeContextCurrent(window);
 
     // Set the required callback functions
-//    glfwSetKeyCallback(window, key_callback);
+    glfwSetKeyCallback(window, keycallback);
 
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
     glewExperimental = GL_TRUE;
@@ -103,6 +103,8 @@ IEngine::~IEngine() {
 //}
 
 void IEngine::start_game() {
+    glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
+    GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
 
     while (!glfwWindowShouldClose(window)) {
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -115,16 +117,14 @@ void IEngine::start_game() {
 
         glUseProgram(shaderProgram);
 
-        glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
 
-        GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
 
         glUniformMatrix4fv(vertexWH,1,GL_FALSE,glm::value_ptr(mat));
 
         // Draw our first triangle
         for (auto & shape : shapes){
-            glBindVertexArray(shape.VAO);
-            glDrawElements(shape.mode, shape.nindices, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(shape->VAO);
+            glDrawElements(shape->mode, shape->nindices, GL_UNSIGNED_INT, 0);
         }
         glBindVertexArray(0);
         //glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -134,15 +134,22 @@ void IEngine::start_game() {
     }
     // Properly de-allocate all resources once they've outlived their purpose
     for (auto & shape : shapes){
-        shape.destroy();
+        shape->destroy();
     }
     // Terminate GLFW, clearing any resources allocated by GLFW.
     glfwTerminate();
     return;
 }
 
-void IEngine::upload(Shape& s) {
-    s.gen();
+void IEngine::upload(Shape *s) {
+    std::cout<<"ZOVETSA"<<std::endl;
+    s->gen();
     shapes.push_back(s);
+}
+
+void IEngine::regen_shapes() {
+    for(auto shape: shapes){
+        shape->gen(0);
+    }
 }
 

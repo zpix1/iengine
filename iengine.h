@@ -9,7 +9,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <functional>
 #include "Shape.h"
 #include "Color.h"
 
@@ -20,17 +20,18 @@
 class IEngine {
     GLFWwindow *window;
     GLuint shaderProgram;
-    std::vector<Shape> shapes;
+    std::vector<Shape*> shapes;
     Color background;
     int width,height;
 public:
-    IEngine(int height, int width, const char *title, Color bg);
+    IEngine(int height, int width, const char *title, Color bg, GLFWkeyfun keycallback);
 
     ~IEngine();
 
     //void upload_vector(GLfloat *vertices, GLuint *indices);
     void start_game();
-    void upload(Shape& s);
+    void upload(Shape *s);
+    void regen_shapes();
 };
 
 

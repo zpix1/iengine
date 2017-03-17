@@ -9,11 +9,12 @@
 #include "Shape.h"
 #include "Color.h"
 class Rectangle: public Shape {
+public:
     GLfloat x1,x2,y1,y2;
     Color color;
 public:
     Rectangle(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2,Color color);
-    void gen();
+    void gen(int mode=1);
 };
 
 

@@ -15,6 +15,8 @@ public:
     GLsizei nvertices;
     GLsizei nindices;
     GLenum mode;
+
+    void reload();
 private:
     GLuint colorbuffer;
     GLuint VBO;
@@ -22,8 +24,10 @@ private:
 protected:
     void init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices,std::vector<GLfloat>& colors, GLenum mode);
 public:
-    virtual void gen();
+    virtual void gen(int mode=1);
     void destroy();
+
+    void reload(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices, std::vector<GLfloat> &colors, GLenum drawing_mode);
 };
 
 

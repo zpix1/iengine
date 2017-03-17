@@ -11,8 +11,8 @@ Circle::Circle(GLfloat radius1, GLfloat x1, GLfloat y1, Color color1) {
     color = color1;
 }
 
-void Circle::gen() {
-    int n = 100;
+void Circle::gen(int mode) {
+    int n = 1000;
 
     std::vector<GLfloat> vertices((unsigned long) (3 * (n + 1)));
 
@@ -41,5 +41,5 @@ void Circle::gen() {
         colors[4 * i + 2] = color.b; //b
         colors[4 * i + 3] = color.alpha;  //a
     }
-    init(vertices,indices,colors,GL_TRIANGLES);
+    mode ? init(vertices,indices,colors,GL_TRIANGLES) : reload(vertices,indices,colors,GL_TRIANGLES);
 }
