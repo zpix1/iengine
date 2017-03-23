@@ -12,6 +12,7 @@
 #include <functional>
 #include "Shape.h"
 #include "Color.h"
+#include "Vector2.h"
 
 #ifndef OPENGL_IENGINE_H
 #define OPENGL_IENGINE_H
@@ -25,7 +26,7 @@ class IEngine {
     int width,height;
     std::function <void()> loopfunction;
 public:
-    IEngine(int height, int width, const char *title, Color bg, GLFWkeyfun keycallback, std::function <void()> loopfunction);
+    IEngine(int height, int width, const char *title, Color bg, GLFWkeyfun keycallback,GLFWmousebuttonfun mousecallback, std::function <void()> loopfunction);
 
     ~IEngine();
 
@@ -33,6 +34,7 @@ public:
     void start_game();
     void upload(Shape *s);
     void regen_shapes();
+    Vector2 getCursorPos();
 };
 
 

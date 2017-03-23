@@ -4,7 +4,7 @@
 
 #include "iengine.h"
 
-IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfun keycallback, std::function <void()> loopfunction1) {
+IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfun keycallback,GLFWmousebuttonfun mousecallback, std::function <void()> loopfunction1) {
     background = bg; //background color
     width = width1;
     height = height1;
@@ -43,6 +43,7 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfu
 
     // Set the required callback functions
     glfwSetKeyCallback(window, keycallback);
+    glfwSetMouseButtonCallback(window,mousecallback);
 
     // Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
     glewExperimental = GL_TRUE;
@@ -151,5 +152,11 @@ void IEngine::regen_shapes() {
     for(auto shape: shapes){
         shape->gen(true);
     }
+}
+
+Vector2 IEngine::getCursorPos() {
+    double x,y;
+    glfwGetCursorPos(window,&x,&y);
+    return Vector2(x, y);
 }
 
