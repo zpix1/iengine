@@ -4,10 +4,11 @@
 
 #include "iengine.h"
 
-IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfun keycallback) {
+IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfun keycallback, std::function <void()> loopfunction1) {
     background = bg; //background color
     width = width1;
     height = height1;
+    loopfunction = loopfunction1;
     const GLchar *vertexShaderSource = "#version 330 core\n"
             "uniform mat4 wh;\n"
             "layout(location = 1) in vec4 vertexColor;\n"
@@ -107,9 +108,9 @@ void IEngine::start_game() {
     GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
 
     while (!glfwWindowShouldClose(window)) {
+        loopfunction();
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
-
         // Render
         // Clear the colorbuffer
         glClearColor(background.r,background.g,background.b,background.alpha);
@@ -142,14 +143,13 @@ void IEngine::start_game() {
 }
 
 void IEngine::upload(Shape *s) {
-    std::cout<<"ZOVETSA"<<std::endl;
     s->gen();
     shapes.push_back(s);
 }
 
 void IEngine::regen_shapes() {
     for(auto shape: shapes){
-        shape->gen(0);
+        shape->gen(true);
     }
 }
 

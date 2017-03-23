@@ -23,8 +23,9 @@ class IEngine {
     std::vector<Shape*> shapes;
     Color background;
     int width,height;
+    std::function <void()> loopfunction;
 public:
-    IEngine(int height, int width, const char *title, Color bg, GLFWkeyfun keycallback);
+    IEngine(int height, int width, const char *title, Color bg, GLFWkeyfun keycallback, std::function <void()> loopfunction);
 
     ~IEngine();
 

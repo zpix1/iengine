@@ -43,3 +43,8 @@ void Circle::gen(int mode) {
     }
     mode ? init(vertices,indices,colors,GL_TRIANGLES) : reload(vertices,indices,colors,GL_TRIANGLES);
 }
+
+void Circle::apply_vector(Vector2 v) {
+    x += v.x;
+    y += v.y;
+}

@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
+#include "Vector2.h"
 
 #ifndef OPENGL_SHAPE_H
 #define OPENGL_SHAPE_H
@@ -25,6 +26,7 @@ protected:
     void init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices,std::vector<GLfloat>& colors, GLenum mode);
 public:
     virtual void gen(int mode=1);
+    virtual void apply_vector(Vector2 v);
     void destroy();
 
     void reload(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices, std::vector<GLfloat> &colors, GLenum drawing_mode);

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Shape.h"
 
 
@@ -44,6 +45,7 @@ void Shape::reload(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices,
 
 void Shape::init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices, std::vector<GLfloat> &colors,
                  GLenum drawing_mode) {
+    std::cout << "SHAPE" << std::endl;
     nvertices = (GLsizei) vertices.size();
     nindices = (GLsizei) indices.size();
     mode = drawing_mode;
@@ -82,10 +84,12 @@ void Shape::init(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices, s
 
 }
 
-void Shape::gen(int mode) {
+void Shape::gen(int mode) {}
 
-}
+void Shape::apply_vector(Vector2 v) {}
 
 void Shape::reload() {
-    gen(1);
+    gen(false);
 }
+
+
