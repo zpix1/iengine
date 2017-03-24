@@ -105,7 +105,7 @@ void mousecallback(GLFWwindow* window, int button, int action, int mods){
         double wantedphi = atan2(mouse.y - d->y,mouse.x - d->x);
         double currentphi = atan2(speeds[i].y,speeds[i].x);
         double newphi = currentphi + (wantedphi - currentphi)*0.1;
-        double currentv = sqrt(speeds[i].x*speeds[i].x + speeds[i].y*speeds[i].y);
+        double currentv = sqrt(speeds[i].x*speeds[i].x + speeds[i].y*speeds[i].y)*0.9;
         speeds[i].x = currentv * cos(newphi);
         speeds[i].y = currentv * sin(newphi);
         d->apply_vector(speeds[i]);
