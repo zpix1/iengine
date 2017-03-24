@@ -12,7 +12,7 @@ Circle::Circle(GLfloat radius1, GLfloat x1, GLfloat y1, Color color1) {
 }
 
 void Circle::gen(int mode) {
-    int n = 1000;
+    int n = 3;
 
     std::vector<GLfloat> vertices((unsigned long) (3 * (n + 1)));
 
@@ -47,4 +47,8 @@ void Circle::gen(int mode) {
 void Circle::apply_vector(Vector2 v) {
     x += v.x;
     y += v.y;
+}
+
+Vector2 Circle::get_center(){
+    return Vector2(x,y);
 }

@@ -88,8 +88,12 @@ void Shape::gen(int mode) {}
 
 void Shape::apply_vector(Vector2 v) {}
 
+Vector2 Shape::get_center() {}
+
+
 void Shape::reload() {
     gen(false);
 }
+
 
 

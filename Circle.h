@@ -20,6 +20,7 @@ public:
     Circle(GLfloat radius, GLfloat x, GLfloat y, Color color);
     void apply_vector(Vector2 v);
     void gen(int mode=1);
+    Vector2 get_center();
 };
 
 

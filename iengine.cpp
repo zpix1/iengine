@@ -11,12 +11,18 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfu
     loopfunction = loopfunction1;
     const GLchar *vertexShaderSource = "#version 330 core\n"
             "uniform mat4 wh;\n"
+            "uniform vec2 center;\n"
             "layout(location = 1) in vec4 vertexColor;\n"
             "layout (location = 0) in vec3 position;\n"
             "out vec4 fragmentColor;\n"
+            "mat3 rotZ(float a){float c=cos(a),s=sin(a);return mat3(c,s,0.,-s,c,0.,0.,0.,0.);}\n"
+
             "void main()\n"
             "{\n"
-            "gl_Position = wh*vec4(position, 1.0);\n"
+            "mat3 trans = rotZ(1.7);\n"
+            "vec3 pos = trans*vec3(position.x-center.x,position.y-center.y,0.0) + vec3(center,0.0);\n"
+            "vec4 finalpos = wh*vec4(pos, 1.0);\n"
+            "gl_Position = finalpos;\n"
             "fragmentColor = vertexColor;\n"
             "}\0";
     const GLchar *fragmentShaderSource = "#version 330 core\n"
@@ -107,6 +113,8 @@ IEngine::~IEngine() {
 void IEngine::start_game() {
     glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
     GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
+    glm::vec3 center;
+    GLint centerWH = glGetUniformLocation(shaderProgram, "center");
 
     while (!glfwWindowShouldClose(window)) {
         loopfunction();
@@ -119,12 +127,12 @@ void IEngine::start_game() {
 
         glUseProgram(shaderProgram);
 
-
-
         glUniformMatrix4fv(vertexWH,1,GL_FALSE,glm::value_ptr(mat));
 
         // Draw our first triangle
         for (auto & shape : shapes){
+            center = glm :: vec3(shape->get_center().x,shape->get_center().y,0.0);
+            glUniform2f(centerWH,center.x,center.y);
             glBindVertexArray(shape->VAO);
             glDrawElements(shape->mode, shape->nindices, GL_UNSIGNED_INT, 0);
         }

@@ -114,8 +114,8 @@ void mousecallback(GLFWwindow* window, int button, int action, int mods){
     cout << button << " " << ei.getCursorPos().x << endl;
 }
 int main() {
-    for (int x=100;x<1000;x+=100){
-        for (int y=100;y<1000;y+=100){
+    for (int x=100;x<1000;x+=900){
+        for (int y=100;y<1000;y+=900){
             cout << Utility::randFloat()-1 << endl;
             Circle *c= new Circle(r,x,y,Color(200,200,0,100));
             ei.upload(c);
