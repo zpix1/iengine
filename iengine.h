@@ -12,6 +12,7 @@
 #include <functional>
 #include "Shape.h"
 #include "Color.h"
+#include "Triangle.h"
 #include "Vector2.h"
 
 #ifndef OPENGL_IENGINE_H

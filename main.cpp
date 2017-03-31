@@ -2,6 +2,7 @@
 #include "Circle.h"
 #include "Vector2.h"
 #include "Utility.h"
+#include "Triangle.h"
 #include <cmath>
 using namespace std;
 
@@ -12,82 +13,18 @@ void loop();
 
 IEngine ei = IEngine(size.x, size.y, "Test",Color(83,134,139,26),keycallback,mousecallback,loop);
 
-
-vector<Circle*> circles;
-vector<Vector2> speeds;
-int r = 10;
-int a = 1;
-Vector2 gravity (0.1,0.1);
 void loop(){
-    for(int i=0;i<circles.size();i++) {
-        Circle* d = circles[i];
-        Vector2 mouse = ei.getCursorPos();
-        double wantedphi = atan2(mouse.y - d->y,mouse.x - d->x);
-        double currentphi = atan2(speeds[i].y,speeds[i].x);
-        double newphi = currentphi + abs(wantedphi - currentphi)*0.1;
-        cout <<"phi "<< newphi << endl;
-        double currentv = sqrt(speeds[i].x*speeds[i].x + speeds[i].y*speeds[i].y);
-
-        d->rotate(currentphi);
-        speeds[i].x = currentv * cos(newphi);
-        speeds[i].y = currentv * sin(newphi);
-        d->apply_vector(speeds[i]);
-        d->reload();
-    }
 }
 
 void keycallback(GLFWwindow* window, int key, int scancode, int action, int mode){
-    cout << key << scancode << action <<endl;
-    if (1) {
-        int dvx = 0, dvy = 0;
-        switch (key) {
-            case GLFW_KEY_RIGHT:
-                dvx = a;
-                break;
-            case GLFW_KEY_LEFT:
-                dvx = -a;
-                break;
-            case GLFW_KEY_UP:
-                dvy = -a;
-                break;
-            case GLFW_KEY_DOWN:
-                dvy = a;
-                break;
-
-            case GLFW_KEY_W:
-                gravity = Vector2(0,-0.1);
-                break;
-            case GLFW_KEY_A:
-                gravity = Vector2(0.1,0);
-                break;
-            case GLFW_KEY_S:
-                gravity = Vector2(0,0.1);
-                break;
-            case GLFW_KEY_D:
-                gravity = Vector2(0.1,0);
-                break;
-        }
-        for (int i = 0; i < circles.size(); i++) {
-            Circle *d = circles[i];
-            speeds[i].y += dvy;
-            speeds[i].x += dvx;
-            d->apply_vector(speeds[i]);
-            d->reload();
-        }
-    }
 };
 
 void mousecallback(GLFWwindow* window, int button, int action, int mods){}
 int main() {
-    for (int x=100;x<1000;x+=100){
-        for (int y=100;y<1000;y+=100){
-            cout << Utility::randFloat()-1 << endl;
-            Circle *c= new Circle(r,x,y,Color(200,200,0,100));
-            ei.upload(c);
-            circles.push_back(c);
-            speeds.push_back(Vector2((Utility::randFloat()-0.5)*5.0,(Utility::randFloat()-0.5)*5.0));
-            cout << speeds.back().x << " " << speeds.back().y << endl;
-        }
-    }
+
+
+
+    Triangle t(0.,0.,200.,0.,0.,100.,Color(100,0,0,255));
+    ei.upload(&t);
     ei.start_game();
 }

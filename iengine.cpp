@@ -4,7 +4,7 @@
 
 #include "iengine.h"
 
-IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfun keycallback,GLFWmousebuttonfun mousecallback, std::function <void()> loopfunction1) {
+IEngine::IEngine(int width1, int height1, const char *title, Color bg, GLFWkeyfun keycallback,GLFWmousebuttonfun mousecallback, std::function <void()> loopfunction1) {
     background = bg; //background color
     width = width1;
     height = height1;
@@ -28,8 +28,11 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfu
     const GLchar *fragmentShaderSource = "#version 330 core\n"
             "out vec4 color;\n"
             "in vec4 fragmentColor;\n"
+            "uniform sampler2D zbuffer;\n"
             "void main()\n"
             "{\n"
+            "vec2 lighter = vec2(500,500);\n"
+
             "color = fragmentColor;\n"
             "}\n\0";
 
@@ -98,6 +101,8 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfu
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
+
+
 }
 
 IEngine::~IEngine() {
@@ -111,6 +116,11 @@ IEngine::~IEngine() {
 //}
 
 void IEngine::start_game() {
+    Triangle bg1(0.,0.,0.,width,height,0.0,background);
+    Triangle bg2(0.,width,height,0.0,width,height,background);
+    upload(&bg1);
+    upload(&bg2);
+
     glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
     GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
     glm::vec3 center;

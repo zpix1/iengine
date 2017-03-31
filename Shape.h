@@ -16,7 +16,7 @@ public:
     GLsizei nvertices;
     GLsizei nindices;
     GLenum mode;
-    GLfloat angle=0.5;
+    GLfloat angle=0.;
     void reload();
 private:
     GLuint colorbuffer;
