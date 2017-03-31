@@ -16,7 +16,7 @@ public:
     GLsizei nvertices;
     GLsizei nindices;
     GLenum mode;
-
+    GLfloat angle=0.5;
     void reload();
 private:
     GLuint colorbuffer;
@@ -28,6 +28,7 @@ public:
     virtual void gen(int mode=1);
     virtual Vector2 get_center();
     virtual void apply_vector(Vector2 v);
+    void rotate(GLfloat angle);
     void destroy();
     void reload(std::vector<GLfloat> &vertices, std::vector<GLuint> &indices, std::vector<GLfloat> &colors, GLenum drawing_mode);
 };

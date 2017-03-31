@@ -19,37 +19,16 @@ int r = 10;
 int a = 1;
 Vector2 gravity (0.1,0.1);
 void loop(){
-//    for(int i=0;i<circles.size();i++) {
-////        speeds[i].y += gravity.y;
-////        speeds[i].x -= gravity.x;
-//        Circle* d = circles[i];
-//        if (d->x+r > size.x) {
-//            speeds[i].x = -speeds[i].x;
-//        }
-//        if (d->x-r < 0) {
-//            speeds[i].x = -speeds[i].x;
-//        }
-//        if (d->y+r > size.y) {
-//            speeds[i].y = -speeds[i].y;
-//        }
-//        if (d->y-r < 0) {
-//            speeds[i].y = -speeds[i].y;
-//        }
-//
-//        d->apply_vector(speeds[i]);
-//        d->reload();
-//    }
     for(int i=0;i<circles.size();i++) {
         Circle* d = circles[i];
         Vector2 mouse = ei.getCursorPos();
         double wantedphi = atan2(mouse.y - d->y,mouse.x - d->x);
         double currentphi = atan2(speeds[i].y,speeds[i].x);
-        double newphi = currentphi + (wantedphi - currentphi)*0.1;
-        if (abs(newphi-0.001) < 0){
-            cout << 'a';
-            newphi = Utility::randFloat();
-        }
+        double newphi = currentphi + abs(wantedphi - currentphi)*0.1;
+        cout <<"phi "<< newphi << endl;
         double currentv = sqrt(speeds[i].x*speeds[i].x + speeds[i].y*speeds[i].y);
+
+        d->rotate(currentphi);
         speeds[i].x = currentv * cos(newphi);
         speeds[i].y = currentv * sin(newphi);
         d->apply_vector(speeds[i]);
@@ -98,24 +77,10 @@ void keycallback(GLFWwindow* window, int key, int scancode, int action, int mode
     }
 };
 
-void mousecallback(GLFWwindow* window, int button, int action, int mods){
-    for(int i=0;i<circles.size();i++) {
-        Circle* d = circles[i];
-        Vector2 mouse = ei.getCursorPos();
-        double wantedphi = atan2(mouse.y - d->y,mouse.x - d->x);
-        double currentphi = atan2(speeds[i].y,speeds[i].x);
-        double newphi = currentphi + (wantedphi - currentphi)*0.1;
-        double currentv = sqrt(speeds[i].x*speeds[i].x + speeds[i].y*speeds[i].y)*0.9;
-        speeds[i].x = currentv * cos(newphi);
-        speeds[i].y = currentv * sin(newphi);
-        d->apply_vector(speeds[i]);
-        d->reload();
-    }
-    cout << button << " " << ei.getCursorPos().x << endl;
-}
+void mousecallback(GLFWwindow* window, int button, int action, int mods){}
 int main() {
-    for (int x=100;x<1000;x+=900){
-        for (int y=100;y<1000;y+=900){
+    for (int x=100;x<1000;x+=100){
+        for (int y=100;y<1000;y+=100){
             cout << Utility::randFloat()-1 << endl;
             Circle *c= new Circle(r,x,y,Color(200,200,0,100));
             ei.upload(c);

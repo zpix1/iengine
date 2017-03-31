@@ -11,7 +11,7 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfu
     loopfunction = loopfunction1;
     const GLchar *vertexShaderSource = "#version 330 core\n"
             "uniform mat4 wh;\n"
-            "uniform vec2 center;\n"
+            "uniform vec3 center;\n"
             "layout(location = 1) in vec4 vertexColor;\n"
             "layout (location = 0) in vec3 position;\n"
             "out vec4 fragmentColor;\n"
@@ -19,8 +19,8 @@ IEngine::IEngine(int height1, int width1, const char *title, Color bg, GLFWkeyfu
 
             "void main()\n"
             "{\n"
-            "mat3 trans = rotZ(1.7);\n"
-            "vec3 pos = trans*vec3(position.x-center.x,position.y-center.y,0.0) + vec3(center,0.0);\n"
+            "mat3 rotation = rotZ(center[2]);\n"
+            "vec3 pos = (rotation*vec3(position.x-center.x,position.y-center.y,0.0)) + vec3(center.x,center.y,0.0);\n"
             "vec4 finalpos = wh*vec4(pos, 1.0);\n"
             "gl_Position = finalpos;\n"
             "fragmentColor = vertexColor;\n"
@@ -115,7 +115,6 @@ void IEngine::start_game() {
     GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
     glm::vec3 center;
     GLint centerWH = glGetUniformLocation(shaderProgram, "center");
-
     while (!glfwWindowShouldClose(window)) {
         loopfunction();
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -131,8 +130,9 @@ void IEngine::start_game() {
 
         // Draw our first triangle
         for (auto & shape : shapes){
-            center = glm :: vec3(shape->get_center().x,shape->get_center().y,0.0);
-            glUniform2f(centerWH,center.x,center.y);
+            center = glm :: vec3(shape->get_center().x,shape->get_center().y,shape->angle);
+            std::cout << shape->angle << std::endl;
+            glUniform3f(centerWH,center.x,center.y,center.z);
             glBindVertexArray(shape->VAO);
             glDrawElements(shape->mode, shape->nindices, GL_UNSIGNED_INT, 0);
         }

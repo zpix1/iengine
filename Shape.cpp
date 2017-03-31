@@ -95,5 +95,9 @@ void Shape::reload() {
     gen(false);
 }
 
+void Shape::rotate(GLfloat angle1) {
+    angle = angle1;
+}
+
 
 
