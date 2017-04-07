@@ -116,16 +116,25 @@ IEngine::~IEngine() {
 //}
 
 void IEngine::start_game() {
-    Triangle bg1(0.,0.,0.,width,height,0.0,background);
-    Triangle bg2(0.,width,height,0.0,width,height,background);
-    upload(&bg1);
-    upload(&bg2);
+
 
     glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
     GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
     glm::vec3 center;
     GLint centerWH = glGetUniformLocation(shaderProgram, "center");
     while (!glfwWindowShouldClose(window)) {
+
+        GLuint FramebufferName = 0;
+        glGenFramebuffers(1, &FramebufferName);
+        glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+
+        // The depth buffer
+        GLuint depthrenderbuffer;
+        glGenRenderbuffers(1, &depthrenderbuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
+        //glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
         loopfunction();
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
         glfwPollEvents();
