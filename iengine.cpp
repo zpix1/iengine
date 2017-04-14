@@ -45,7 +45,8 @@ IEngine::IEngine(int width1, int height1, const char *title, Color bg, GLFWkeyfu
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
+    glfwWindowHint(GLFW_DECORATED,GL_FALSE);
+    glfwWindowHint(GLFW_FLOATING,GL_TRUE);
     // Create a GLFWwindow object that we can use for GLFW's functions
     window = glfwCreateWindow(width, height, title, nullptr, nullptr);
     glfwMakeContextCurrent(window);
@@ -124,16 +125,7 @@ void IEngine::start_game() {
     GLint centerWH = glGetUniformLocation(shaderProgram, "center");
     while (!glfwWindowShouldClose(window)) {
 
-        GLuint FramebufferName = 0;
-        glGenFramebuffers(1, &FramebufferName);
-        glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
 
-        // The depth buffer
-        GLuint depthrenderbuffer;
-        glGenRenderbuffers(1, &depthrenderbuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER, depthrenderbuffer);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthrenderbuffer);
         //glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1024, 768, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
         loopfunction();
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -150,7 +142,7 @@ void IEngine::start_game() {
         // Draw our first triangle
         for (auto & shape : shapes){
             center = glm :: vec3(shape->get_center().x,shape->get_center().y,shape->angle);
-            std::cout << shape->angle << std::endl;
+            //std::cout << shape->angle << std::endl;
             glUniform3f(centerWH,center.x,center.y,center.z);
             glBindVertexArray(shape->VAO);
             glDrawElements(shape->mode, shape->nindices, GL_UNSIGNED_INT, 0);

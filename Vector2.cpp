@@ -16,3 +16,11 @@ Vector2 Vector2::operator+(float x1) {
 Vector2 Vector2::operator+(Vector2 v) {
     return Vector2(x+v.x, y+v.y);
 }
+
+Vector2 Vector2::operator*(float x1) {
+    return Vector2(x*x1, y*x1);
+}
+
+float Vector2::getatan2() {
+    return atan2(y,x);
+}

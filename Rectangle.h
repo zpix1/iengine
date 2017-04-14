@@ -14,6 +14,7 @@ public:
     Color color;
 public:
     Rectangle(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2,Color color);
+    void apply_vector(Vector2 v);
     void gen(int mode=1);
 };
 

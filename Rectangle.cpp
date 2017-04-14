@@ -20,3 +20,10 @@ void Rectangle::gen(int mode) {
     std::vector<GLfloat > colors {color.r,color.g,color.b,color.alpha,color.r,color.g,color.b,color.alpha,color.r,color.g,color.b,color.alpha,color.r,color.g,color.b,color.alpha};
     mode ? init(vertices,indices,colors,GL_TRIANGLES) : reload(vertices,indices,colors,GL_TRIANGLES);
 }
+
+void Rectangle::apply_vector(Vector2 v) {
+    x1 += v.x;
+    x2 += v.x;
+    y1 += v.y;
+    y2 += v.y;
+}
