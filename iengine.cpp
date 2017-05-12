@@ -15,6 +15,7 @@ IEngine::IEngine(int width1, int height1, const char *title, Color bg, GLFWkeyfu
             "layout(location = 1) in vec4 vertexColor;\n"
             "layout (location = 0) in vec3 position;\n"
             "out vec4 fragmentColor;\n"
+            "out vec2 pos2D;"
             "mat3 rotZ(float a){float c=cos(a),s=sin(a);return mat3(c,s,0.,-s,c,0.,0.,0.,0.);}\n"
 
             "void main()\n"
@@ -24,16 +25,17 @@ IEngine::IEngine(int width1, int height1, const char *title, Color bg, GLFWkeyfu
             "vec4 finalpos = wh*vec4(pos, 1.0);\n"
             "gl_Position = finalpos;\n"
             "fragmentColor = vertexColor;\n"
+            "pos2D = position.xy;"
             "}\0";
     const GLchar *fragmentShaderSource = "#version 330 core\n"
             "out vec4 color;\n"
             "in vec4 fragmentColor;\n"
-            "uniform sampler2D zbuffer;\n"
+            "in vec2 pos2D;\n"
+            "uniform sampler2D tex;\n"
             "void main()\n"
             "{\n"
             "vec2 lighter = vec2(500,500);\n"
-
-            "color = fragmentColor;\n"
+            "color = texture(tex,vec2(0,0));\n"
             "}\n\0";
 
 
@@ -45,8 +47,8 @@ IEngine::IEngine(int width1, int height1, const char *title, Color bg, GLFWkeyfu
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_DECORATED,GL_FALSE);
-    glfwWindowHint(GLFW_FLOATING,GL_TRUE);
+    glfwWindowHint(GLFW_DECORATED,GL_TRUE);
+    glfwWindowHint(GLFW_FLOATING,GL_FALSE);
     // Create a GLFWwindow object that we can use for GLFW's functions
     window = glfwCreateWindow(width, height, title, nullptr, nullptr);
     glfwMakeContextCurrent(window);
@@ -118,11 +120,36 @@ IEngine::~IEngine() {
 
 void IEngine::start_game() {
 
-
     glm::mat4 mat= glm::ortho( 0.f, (float)width, (float)height, 0.f, 0.f, 0.5f );//glm::ortho(0.0f, (float)width,(float)height,0.0f, 0.5f, 100.0f);
     GLint vertexWH = glGetUniformLocation(shaderProgram, "wh");
     glm::vec3 center;
     GLint centerWH = glGetUniformLocation(shaderProgram, "center");
+
+
+
+    int width, height;
+    GLuint texture = SOIL_load_OGL_texture("/home/zpix/ClionProjects/opengl/red.jpg", SOIL_LOAD_AUTO,
+                          SOIL_CREATE_NEW_ID,
+                          SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_MULTIPLY_ALPHA);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    {
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+        int width, height;
+        unsigned char* image = SOIL_load_image("/home/zpix/ClionProjects/opengl/red.jpg", &width, &height, 0, SOIL_LOAD_RGB);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        SOIL_free_image_data(image);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+
+    //std::cout << width << " <- THIS IS WIDTH1\n";
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+
+    //SOIL_free_image_data(image);
+    GLint tex = glGetUniformLocation(shaderProgram, "tex");
     while (!glfwWindowShouldClose(window)) {
 
 
@@ -144,6 +171,9 @@ void IEngine::start_game() {
             center = glm :: vec3(shape->get_center().x,shape->get_center().y,shape->angle);
             //std::cout << shape->angle << std::endl;
             glUniform3f(centerWH,center.x,center.y,center.z);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glUniform1i(tex,0);
             glBindVertexArray(shape->VAO);
             glDrawElements(shape->mode, shape->nindices, GL_UNSIGNED_INT, 0);
         }
